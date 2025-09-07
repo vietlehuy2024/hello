@@ -19,6 +19,19 @@ void drawFrame(const vector<string>& buffer) {
     }
 }
 
+void gotoxy(int x, int y) {
+#ifdef _WIN32
+    // Windows implementation
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+#else
+    // Linux / macOS (ANSI escape codes)
+    cout << "\033[" << (y + 1) << ";" << (x + 1) << "H";
+#endif
+}
+
 int main()
 {
     vector<string> buffer(HEIGHT, string(WIDTH, ' '));
@@ -38,6 +51,21 @@ int main()
 
     drawFrame(buffer);
 
-    this_thread::sleep_for(chrono::seconds(3));
-	return 0;
+    // Input position (middle of the frame)
+    int midRow = HEIGHT / 2;   // row index in frame
+    int midCol = WIDTH / 2; // col index in frame
+
+    // Move cursor to inside the frame
+    gotoxy(midCol, midRow);
+
+    int num;
+    cin >> num;
+
+    // Move cursor below frame to show result
+    gotoxy(0, HEIGHT + 1);
+    cout << "You entered: " << num << endl;
+
+    this_thread::sleep_for(chrono::seconds(1));
+
+    return 0;
 }
