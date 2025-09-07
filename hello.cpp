@@ -21,7 +21,6 @@ void drawFrame(const vector<string>& buffer) {
 
 int main()
 {
-	cout << "Hello CMake." << endl;
     vector<string> buffer(HEIGHT, string(WIDTH, ' '));
 
     // Draw a box
